@@ -23,7 +23,7 @@ class User(AbstractUser):
         validators=[
             RegexValidator(
                 regex=r"\+7\(\d\d\d\)-\d\d\d-\d\d-\d\d",
-                message="Введите телефон в формате +7(XXX)-XXX-XX-XX)",
+                message="Введите телефон в формате +7(XXX)-XXX-XX-XX",
                 code="invalid_phone_number",
             ),
         ],
