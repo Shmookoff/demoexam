@@ -24,11 +24,12 @@ def register(request: HttpRequest):
     else:
         form = RegisterForm()
 
-    return render(request, "registration/register.html", {"form": form})
+    return render(request, "register.html", {"form": form})
 
 
 class LoginView(BaseLoginView):
     form_class = AuthenticationForm
+    template_name = "login.html"
     next_page = "statements"
 
 
