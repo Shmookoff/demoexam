@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Нарушениям нет</title>
+  </head>
+
+  <body class="bg-slate-200 min-h-screen flex flex-col gap-8">
+    <header class="bg-slate-500 text-slate-50">
+      <div
+        class="container px-4 mx-auto flex justify-between gap-4 h-12 items-center"
+      >
+        <div class="flex gap-4 items-center">
+          <div class="text-xl font-bold">Нарушениям.Нет</div>
+          {% if user.is_authenticated %}
+          <div class="text-slate-300">
+            <a
+              href="{% url 'statements' %}"
+              class="cursor-pointer hover:text-slate-100"
+              >Мои завявления</a
+            >
+          </div>
+          {% if user.is_staff %}
+          <div class="text-slate-300">
+            <a
+              href="{% url 'app_admin' %}"
+              class="cursor-pointer hover:text-slate-100"
+              >Панель администратора</a
+            >
+          </div>
+          {% endif %} {% endif %}
+        </div>
+        <div>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="text-slate-300 hover:text-slate-100">
+              Выйти
+            </button>
+          </form>
+        </div>
+      </div>
+    </header>
+    <main class="container mx-auto grow">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

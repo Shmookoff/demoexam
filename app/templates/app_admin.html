@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% block content %}
+<div class="px-4 flex flex-col gap-8 h-full">
+  <div>
+    <div class="text-2xl font-semibold">Панель администратора</div>
+  </div>
+  <div class="grid grid-cols-4 gap-4">
+    {% for statement in statements %}
+    <article class="bg-slate-50 rounded-md flex flex-col gap-2 p-5">
+      <div class="text-lg font-medium">Заявка №{{ statement.pk }}</div>
+      <div>
+        <div class="text-slate-700">ФИО подавшего</div>
+        <div>{{ statement.reporter.full_name }}</div>
+      </div>
+      <div>
+        <div class="text-slate-700">Государственный регистрационный номер</div>
+        <div>{{ statement.car_registration_number }}</div>
+      </div>
+      <div>
+        <div class="text-slate-700">Описание</div>
+        <div>{{ statement.description }}</div>
+      </div>
+      <div>
+        <div class="text-slate-700">Статус</div>
+        <div>{{ statement.get_status_display }}</div>
+      </div>
+      {% if statement.status == "N" %}
+      <div class="flex gap-2">
+        <form method="post" action="">
+          {% csrf_token %}
+          <input type="hidden" name="statement_id" value="{{ statement.id }}" />
+          <input type="hidden" name="{{ form.status.name }}" value="A" />
+          <button
+            type="submit"
+            class="bg-blue-500 py-2 px-3 text-sm rounded-md text-slate-50 hover:bg-blue-400 transition-all"
+          >
+            Подтвердить
+          </button>
+        </form>
+        <form method="post" action="">
+          {% csrf_token %}
+          <input type="hidden" name="statement_id" value="{{ statement.id }}" />
+          <input type="hidden" name="{{ form.status.name }}" value="R" />
+          <button
+            type="submit"
+            class="bg-red-500 py-2 px-3 text-sm rounded-md text-slate-50 hover:bg-red-400 transition-all"
+          >
+            Отклонить
+          </button>
+        </form>
+      </div>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

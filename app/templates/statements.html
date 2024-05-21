@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="px-4 flex flex-col gap-8 h-full">
+  <div>
+    <div class="text-2xl font-semibold">Мои заявления</div>
+    <a
+      href="{% url 'new_statement' %}"
+      class="underline cursor-pointer text-slate-700 hover:text-slate-900"
+      >Новое заявление</a
+    >
+  </div>
+  <div class="grid grid-cols-4 gap-4">
+    {% for statement in statements %}
+    <article class="bg-slate-50 rounded-md flex flex-col gap-2 p-5">
+      <div class="text-lg font-medium">Заявка №{{ statement.pk }}</div>
+      <div>
+        <div class="text-slate-700">Государственный регистрационный номер</div>
+        <div>{{ statement.car_registration_number }}</div>
+      </div>
+      <div>
+        <div class="text-slate-700">Описание</div>
+        <div>{{ statement.description }}</div>
+      </div>
+      <div>
+        <div class="text-slate-700">Статус</div>
+        <div>{{ statement.get_status_display }}</div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
