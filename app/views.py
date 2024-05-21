@@ -11,7 +11,7 @@ from app.forms import (
     RegisterForm,
     StatementStatusForm,
 )
-from app.models import Statements
+from app.models import Statement
 from django.contrib.admin.views.decorators import staff_member_required
 
 
@@ -39,7 +39,7 @@ class LogoutView(BaseLogoutView):
 
 @login_required
 def statements(request: HttpRequest):
-    statements = Statements.objects.filter(reporter=request.user).all()
+    statements = Statement.objects.filter(reporter=request.user).all()
 
     return render(request, "statements.html", {"statements": statements})
 
@@ -65,7 +65,7 @@ def app_admin(request: HttpRequest):
         update_statement_status(request.POST)
 
     form = StatementStatusForm()
-    statements = Statements.objects.all()
+    statements = Statement.objects.all()
     return render(request, "app_admin.html", {"statements": statements, "form": form})
 
 
@@ -74,7 +74,7 @@ def update_statement_status(POST: QueryDict):
     form = StatementStatusForm(POST)
     if not (statement_id and form.is_valid()):
         return
-    statement = Statements.objects.filter(id=statement_id).first()
+    statement = Statement.objects.filter(id=statement_id).first()
     if not statement:
         return
     status = form.cleaned_data.get("status")

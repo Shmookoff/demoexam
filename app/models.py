@@ -44,7 +44,7 @@ class User(AbstractUser):
         self.middle_name = names[2]
 
 
-class Statements(models.Model):
+class Statement(models.Model):
     class Status(models.TextChoices):
         NEW = "N", _("Новое")
         APPROVED = "A", _("Подтверждено")

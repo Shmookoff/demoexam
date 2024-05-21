@@ -3,7 +3,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
     AuthenticationForm as BaseAuthenticationForm,
 )
-from .models import Statements, User
+from .models import Statement, User
 
 
 class RegisterForm(UserCreationForm):
@@ -35,7 +35,7 @@ class AuthenticationForm(BaseAuthenticationForm):
 
 class CreateStatementForm(forms.ModelForm):
     class Meta:
-        model = Statements
+        model = Statement
         fields = [
             "car_registration_number",
             "description",
@@ -47,5 +47,5 @@ class CreateStatementForm(forms.ModelForm):
 
 class StatementStatusForm(forms.ModelForm):
     class Meta:
-        model = Statements
+        model = Statement
         fields = ["status"]
