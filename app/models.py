@@ -1,18 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
 
 
 class User(AbstractUser):
     first_name = models.CharField(
+        _("first name"),
         max_length=150,
         null=False,
         blank=False,
     )
-    middle_name = models.CharField(max_length=150, null=False, blank=False)
-    last_name = models.CharField(max_length=150, null=False, blank=False)
-    phone = models.CharField(max_length=30, null=False, blank=False)
-    email = models.EmailField(unique=True, null=False, blank=False)
+    middle_name = models.CharField("Отчество", max_length=150, null=False, blank=False)
+    last_name = models.CharField(
+        _("last name"), max_length=150, null=False, blank=False
+    )
+    phone = models.CharField(
+        "Телефон",
+        max_length=30,
+        null=False,
+        blank=False,
+        validators=[
+            RegexValidator(
+                regex=r"\+7\(\d\d\d\)-\d\d\d-\d\d-\d\d",
+                message="Введите телефон в формате +7(XXX)-XXX-XX-XX)",
+                code="invalid_phone_number",
+            ),
+        ],
+    )
+    email = models.EmailField(_("email address"), unique=True, null=False, blank=False)
 
     REQUIRED_FIELDS = ["first_name", "middle_name", "last_name", "phone", "email"]
 
@@ -34,7 +50,16 @@ class Statements(models.Model):
         APPROVED = "A", _("Подтверждено")
         REJECTED = "R", _("Отклонено")
 
-    car_registration_number = models.CharField(max_length=15, blank=False)
-    description = models.CharField(max_length=300, blank=False)
-    status = models.CharField(max_length=1, choices=Status, default=Status.NEW)
-    reporter = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
+    car_registration_number = models.CharField(
+        "Государственный регистрационный номер", max_length=15, blank=False
+    )
+    description = models.CharField("Описание", max_length=300, blank=False)
+    status = models.CharField(
+        "Статус", max_length=1, choices=Status, default=Status.NEW
+    )
+    reporter = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=False,
+        verbose_name="Заявитель",
+    )

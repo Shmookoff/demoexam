@@ -8,37 +8,57 @@
   </head>
 
   <body class="bg-slate-200 min-h-screen flex flex-col gap-8">
-    <header class="bg-slate-500 text-slate-50">
+    <header class="bg-slate-500 text-slate-300">
       <div
         class="container px-4 mx-auto flex justify-between gap-4 h-12 items-center"
       >
         <div class="flex gap-4 items-center">
-          <div class="text-xl font-bold">Нарушениям.Нет</div>
+          <div class="text-xl font-bold text-slate-50">Нарушениям.Нет</div>
           {% if user.is_authenticated %}
-          <div class="text-slate-300">
+          <div>
             <a
               href="{% url 'statements' %}"
               class="cursor-pointer hover:text-slate-100"
-              >Мои завявления</a
             >
+              Мои завявления
+            </a>
           </div>
           {% if user.is_staff %}
-          <div class="text-slate-300">
+          <div>
             <a
               href="{% url 'app_admin' %}"
               class="cursor-pointer hover:text-slate-100"
-              >Панель администратора</a
             >
+              Панель администратора
+            </a>
           </div>
           {% endif %} {% endif %}
         </div>
-        <div>
+        <div class="flex gap-4 items-center">
+          {% if user.is_authenticated %}
+          <div class="text-slate-100">{{request.user.full_name}}</div>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
-            <button type="submit" class="text-slate-300 hover:text-slate-100">
-              Выйти
-            </button>
+            <button type="submit" class="hover:text-slate-100">Выйти</button>
           </form>
+          {% else %}
+          <div>
+            <a
+              href="{% url 'login' %}"
+              class="cursor-pointer hover:text-slate-100"
+            >
+              Войти
+            </a>
+          </div>
+          <div>
+            <a
+              href="{% url 'register' %}"
+              class="cursor-pointer hover:text-slate-100"
+            >
+              Зарегистрироваться
+            </a>
+          </div>
+          {% endif %}
         </div>
       </div>
     </header>

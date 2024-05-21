@@ -20,7 +20,7 @@ def register(request: HttpRequest):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("/login")
+            return redirect("login")
     else:
         form = RegisterForm()
 
@@ -76,5 +76,8 @@ def update_statement_status(POST: QueryDict):
     statement = Statements.objects.filter(id=statement_id).first()
     if not statement:
         return
-    statement.status = form.cleaned_data["status"]
+    status = form.cleaned_data.get("status")
+    if not status:
+        return
+    statement.status = status
     statement.save()
