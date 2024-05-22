@@ -1,5 +1,7 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
 
@@ -44,6 +46,11 @@ class User(AbstractUser):
         self.middle_name = names[2]
 
 
+def statement_date_time_only_hours(value: datetime):
+    if value.minute or value.second or value.microsecond:
+        raise ValidationError("Разрешается запись только по часам")
+
+
 class Statement(models.Model):
     class Status(models.TextChoices):
         NEW = "N", _("Новое")
@@ -62,4 +69,7 @@ class Statement(models.Model):
         on_delete=models.CASCADE,
         blank=False,
         verbose_name="Заявитель",
+    )
+    date_time = models.DateTimeField(
+        "Дата и время", blank=False, validators=[statement_date_time_only_hours]
     )

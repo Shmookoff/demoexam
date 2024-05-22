@@ -39,13 +39,17 @@ class CreateStatementForm(forms.ModelForm):
         fields = [
             "car_registration_number",
             "description",
+            "date_time",
         ]
         widgets = {
             "description": forms.Textarea(),
+            "date_time": forms.DateTimeInput({"type": "datetime-local"}),
         }
 
 
 class StatementStatusForm(forms.ModelForm):
+    forms.DateTimeField
+
     class Meta:
         model = Statement
         fields = ["status"]
